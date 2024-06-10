@@ -1,0 +1,258 @@
+body {
+  width: 100%;
+  height: 100vh;
+  background-color: #055160 !important;
+  background-image: linear-gradient(147deg, #055160 0%, #0e1118 110%);
+
+  color: #fff !important;
+}
+
+.offcanvas,
+.modal-content {
+  background-color: #055160 !important;
+}
+
+.offcanvas-body .nav-pills .nav-link {
+  color: #fff;
+}
+.offcanvas-body .nav-pills .nav-link:hover,
+.offcanvas-body .nav-pills .nav-link.active {
+  color: #055160;
+  background-color: #f8f9fa;
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: space-evenly;
+  align-items: center;
+
+  padding-top: 26px;
+  padding-bottom: 26px;
+}
+
+#scene-title {
+  display: none;
+  font-family: "Roboto Mono", monospace;
+  font-size: 44px;
+
+  text-align: center;
+  line-height: 59px;
+
+  padding-bottom: 0.5rem;
+}
+
+.clock-function-title {
+  text-shadow: 0 0 0px #fff, 0 0 20px #d9c691;
+}
+
+.clock-wrapper-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.clock-wrapper-inner {
+  border-radius: 50%;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease-in;
+}
+.clock-circle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 280px;
+  width: 280px;
+
+  border: 0.75rem solid;
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 4px 3px #0005;
+}
+
+.clock-hands-visible .clock-circle::before {
+  border: 0.25rem solid #fff3;
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+}
+
+.border-active {
+  box-shadow: 0px 0px 5rem #fff5;
+}
+.border-active .clock-circle {
+  transition: border-color 0.25s ease-in;
+  position: relative;
+  background: #043d48;
+  border-color: transparent;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.border-active .clock-circle::after {
+  position: absolute;
+  content: "";
+  top: -0.75rem;
+  left: -0.75rem;
+  z-index: -1;
+  width: calc(100% + 1.5rem);
+  height: calc(100% + 1.5rem);
+  background: linear-gradient(
+    60deg,
+    hsla(224, 85%, 66%),
+    hsla(269, 85%, 66%),
+    hsla(314, 85%, 66%),
+    hsla(359, 85%, 66%),
+    hsl(44, 85%, 66%),
+    hsl(89, 85%, 66%),
+    hsl(134, 85%, 66%),
+    hsl(179, 85%, 66%)
+  );
+  background-position: 0 50%;
+  background-size: 100% 100%;
+  border-radius: 50%;
+  animation: fade-in 0.25s ease-in 1 forwards, moveGradient 1.75s linear infinite;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes moveGradient {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.border-pulse {
+  transition: none;
+  animation: pulse 0.5s 1;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: inset 0px 0px 0px 0px #fff5, 0px 0px 0px 0px #fff5;
+  }
+
+  100% {
+    box-shadow: inset 0px 0px 15px 15px #fff0, 0px 0px 50px 20px #fff0;
+  }
+}
+
+#clock-title {
+  display: block;
+  margin-bottom: -5px;
+  font-size: 1.25rem;
+}
+.clock-time {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 300;
+  font-size: 52px;
+
+  text-shadow: #000 0px 0px 5px;
+}
+.clock-time.clock-time-small {
+  margin-top: -5px;
+  font-size: 1em !important;
+}
+
+.clock-controls {
+  display: flex;
+  justify-content: space-evenly;
+  /* width: 80%; */
+  padding: 0 10%;
+  gap: 1rem;
+}
+
+#btn-menu {
+  position: absolute;
+  left: 0px;
+  top: 0.25rem;
+}
+#btn-settings {
+  position: absolute;
+  right: 0;
+  top: 0.25rem;
+}
+#btn-fullscreen {
+  position: absolute;
+  right: 0;
+  bottom: 0.25rem;
+}
+@media all and (display-mode: standalone) {
+  #btn-fullscreen {
+    display: none;
+  }
+}
+
+.btn {
+  box-shadow: none !important;
+}
+.btn-control {
+  width: 4rem;
+}
+.btn-controls {
+  width: 8rem;
+}
+
+.btn > svg {
+  transition: color 0.2s ease-in;
+  color: #f8f9fa;
+  width: 100%;
+}
+
+.btn:hover > svg {
+  color: #f2c94c;
+  width: 100%;
+}
+
+#btn-control-play .bi-play-circle {
+  display: block;
+}
+#btn-control-play .bi-pause-circle {
+  display: none;
+}
+#btn-control-play.control-playing .bi-play-circle {
+  display: none;
+}
+#btn-control-play.control-playing .bi-pause-circle {
+  display: block;
+}
+
+@media (orientation: landscape) and (max-width: 992px) {
+  .scene {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  #scene-title {
+    display: block;
+    order: 1;
+    font-size: 38px;
+  }
+  .clock-controls {
+    order: 2;
+    padding: 0;
+    gap: 0.5rem;
+  }
+
+  .clock-wrapper-outer {
+    flex-basis: 100%;
+  }
+  .clock-circle {
+    height: 240px;
+    width: 240px;
+  }
+  #clock-title {
+    display: none;
+  }
+  .clock-time {
+    font-size: 42px;
+  }
+}

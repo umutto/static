@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shibuya Distance Cost Matrix</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/2.0.0/css/select.dataTables.css">
+    <style>
+        body {
+            display: flex;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .dataTables_filter {
+            margin-bottom: 16px;
+        }
+
+
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        .selected a {
+            color: aliceblue !important;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 16px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            background: aliceblue;
+            border: 1px solid #333;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table id="stationTable" class="display">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Distance</th>
+                    <th>Pref</th>
+                    <th>Station</th>
+                    <th>Suumo</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.0/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.0/js/select.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.dataTables.js"></script>
+    <script src="data.js"></script>
+    <script>
+        const suumoSearchUrl = `https://suumo.jp/jj/chintai/ichiran/FR301FC001/?ar=030&bs=040&fw2=&pc=30&po1=25&po2=99&ra=013&md=06&md=07&md=08&md=09&md=10&md=11&md=12&md=13&md=14&cb=0.0&ct=20.0&et=15&mb=45&mt=9999999&cn=30&co=1&kz=1&tc=0400101&tc=0400301&tc=0400302&tc=0400904&tc=0400907&shkr1=02&shkr2=02&shkr3=02&shkr4=02&shkk1=02060202&shkk1=02060203`;
+        function getSearchUrl(stations) {
+            return `${suumoSearchUrl}&ek=${stations.join("&ek=")}`;
+        }
+        const table = $('#stationTable').DataTable({
+            pageLength: 50,
+            data: stations,
+            lengthMenu: [10, 25, 50, 75, 100],
+            columns: [
+                {
+                    data: "id",
+                    sortable: false,
+                    searchable: false,
+                    render: DataTable.render.select()
+                },
+                { data: 'cost' },
+                { data: "preference" },
+                {
+                    data: 'stationName', render: function (data, type, row) {
+                        return `<a href="${row.mapsUrl}" target="_blank">${data}</a>`;
+                    }
+                },
+                {
+                    data: 'suumoUrl', render: function (data) {
+                        return `<a href="${data}" target="_blank">Suumo</a>`;
+                    }, sortable: false, searchable: false
+                }
+            ],
+            select: {
+                selector: 'td:first-child',
+                style: 'multi'
+            },
+            layout: {
+                bottomStart: {
+                    buttons: [
+                        {
+                            text: 'Suumo Selected',
+                            action: function () {
+                                const selectedSuumoIds = table.rows({ selected: true }).data().toArray().map(d => d.suumoId);
+                                if (selectedSuumoIds.length) window.open(getSearchUrl(selectedSuumoIds), "_blank");
+                            }
+                        }
+                    ]
+                }
+            },
+            order: [[1, 'asc']]
+        });
+    </script>
+
+</body>
+
+</html>
